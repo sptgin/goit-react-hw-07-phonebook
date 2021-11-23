@@ -3,6 +3,10 @@ import PropsType from 'prop-types';
 import { v4 as uuid } from 'uuid';
 import './ContactForm.css';
 import { useForm } from 'react-hook-form';
+import {
+  useAddContactMutation,
+  useGetContactsQuery,
+} from '../services/phonebook-api';
 import { addContact } from '../redux/actions';
 import { useDispatch } from 'react-redux';
 
@@ -13,19 +17,35 @@ export default function ContactForm() {
     reset,
     formState: { errors },
   } = useForm();
-  const dispatch = useDispatch();
+
+  const { data: contacts } = useGetContactsQuery();
+  const [addContact] = useAddContactMutation();
+
+  // const dispatch = useDispatch();
 
   const onSubmit = data => {
-    dispatch(addContact({ ...data, id: uuid() }));
-    reset();
+    // dispatch(addContact({ ...data, id: uuid() }));
+    // reset();
+    console.log(contacts);
+
+    const checkContact = contacts.some(
+      contact => contact.name.toLowerCase() === data.name.toLowerCase(),
+    );
+    if (checkContact) {
+      alert(`${data.name} is already exists`);
+      return;
+    } else {
+      addContact(data);
+      reset();
+    }
   };
 
-  let nameId = uuid();
-  let numberId = uuid();
+  // let nameId = uuid();
+  // let numberId = uuid();
 
   return (
     <form className="contacts__form" onSubmit={handleSubmit(onSubmit)}>
-      <label className="contcts__form-label" htmlFor={nameId}>
+      <label className="contcts__form-label">
         Name
         <input
           className="contcts__form-input"
@@ -42,12 +62,12 @@ export default function ContactForm() {
           <p>Alphabetical characters only</p>
         )}
       </label>
-      <label className="contcts__form-label" htmlFor={numberId}>
+      <label className="contcts__form-label">
         Number
         <input
           className="contcts__form-input"
           type="tel"
-          {...register('number', {
+          {...register('phone', {
             required: true,
             pattern:
               /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
