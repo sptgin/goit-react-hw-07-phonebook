@@ -5,7 +5,7 @@ export default function ContactListItem({ contact, handleDelContact }) {
   return (
     <li className="contact__list-item">
       <div>
-        {contact.name}: {contact.number}
+        {contact.name}: {contact.phone}
       </div>
       <button
         className="contact__list-delete-button"

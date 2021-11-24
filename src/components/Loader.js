@@ -6,7 +6,7 @@ function SpinnerLoader() {
     <Loader
       className="SpinnerLoader"
       type="Watch"
-      color="#303f9f"
+      color="#808080"
       height={100}
       width={100}
       timeout={3000} //3 secs
