@@ -1,14 +1,11 @@
 import React from 'react';
 import PropsType from 'prop-types';
-import { v4 as uuid } from 'uuid';
 import './ContactForm.css';
 import { useForm } from 'react-hook-form';
 import {
   useAddContactMutation,
   useGetContactsQuery,
 } from '../services/phonebook-api';
-import { addContact } from '../redux/actions';
-import { useDispatch } from 'react-redux';
 
 export default function ContactForm() {
   const {
@@ -21,11 +18,7 @@ export default function ContactForm() {
   const { data: contacts } = useGetContactsQuery();
   const [addContact] = useAddContactMutation();
 
-  // const dispatch = useDispatch();
-
   const onSubmit = data => {
-    // dispatch(addContact({ ...data, id: uuid() }));
-    // reset();
     console.log(contacts);
 
     const checkContact = contacts.some(
@@ -39,9 +32,6 @@ export default function ContactForm() {
       reset();
     }
   };
-
-  // let nameId = uuid();
-  // let numberId = uuid();
 
   return (
     <form className="contacts__form" onSubmit={handleSubmit(onSubmit)}>

@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import './ContactListItem.css';
+import { useDelContactMutation } from '../services/phonebook-api';
 
-export default function ContactListItem({ contact, handleDelContact }) {
+export default function ContactListItem({ contact }) {
+  const [deleteContact] = useDelContactMutation();
   return (
     <li className="contact__list-item">
       <div>
@@ -11,7 +13,7 @@ export default function ContactListItem({ contact, handleDelContact }) {
         className="contact__list-delete-button"
         type="submit"
         id={contact.id}
-        onClick={handleDelContact}
+        onClick={() => deleteContact(contact.id)}
       >
         Delete
       </button>
